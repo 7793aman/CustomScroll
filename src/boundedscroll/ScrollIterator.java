@@ -12,24 +12,28 @@ public class ScrollIterator<E> implements ListIterator<E> {
     }
     @Override
     public boolean hasNext() {
-        return  scroll.rightLength()!=0;
+        return  scroll.rightLength() > 0;
     }
 
     @Override
     public E next() {
-        if(!this.hasNext()) throw  new NoSuchElementException();
-        return scroll.getNext();
+        if(!hasNext()) throw new NoSuchElementException();
+        E result = scroll.getNext();
+        scroll.advance();
+        return result;
     }
 
     @Override
     public boolean hasPrevious() {
-        return scroll.leftLength()!=0;
+        return scroll.leftLength() > 0;
     }
 
     @Override
     public E previous() {
         if(!this.hasPrevious()) throw  new NoSuchElementException();
-        return scroll.getPrevious();
+        E result = scroll.getPrevious();
+        scroll.retreat();
+        return result;
     }
 
     @Override
@@ -40,21 +44,21 @@ public class ScrollIterator<E> implements ListIterator<E> {
     @Override
     public int previousIndex() {
         if(scroll.leftLength() == 0) return -1;
-        return scroll.leftLength();
+        return scroll.leftLength()-1;
     }
 
     @Override
     public void remove() {
-        //Not required
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void set(E e) {
-        //Not required
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void add(E e) {
-        //Not required
+        throw new UnsupportedOperationException();
     }
 }

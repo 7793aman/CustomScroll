@@ -5,67 +5,71 @@ import java.util.List;
 
 public class ListScroll<E> extends AbstractScroll<E> {
     private List<E> elements;
-    private int position;
+    private int pos;
 
     public ListScroll(int max) {
         super(max);
-        elements  = new ArrayList<E>();
+        elements = new ArrayList<E>();
     }
 
     @Override
     public void insert(E elem) {
-        if(leftLength() + rightLength() >= capacity()) throw new IllegalStateException();
-        if(elem == null) throw  new IllegalArgumentException();
-        elements.add(position,elem);
+        if (elem == null) throw new IllegalArgumentException();
+        if (elements.size() == capacity()) throw new IllegalStateException();
+        elements.add(pos, elem);
     }
 
     @Override
     public E delete() {
-        if(position == capacity()) throw new IllegalStateException();
-        return elements.remove(position);
+        if (rightLength() == 0)  throw new IllegalStateException();
+        return elements.remove(pos);
     }
 
     @Override
     public void advance() {
-        if(rightLength() ==0) throw new IllegalStateException();
-        if(rightLength() ==0) throw new IllegalStateException();
-        position = position +1;
+        if (rightLength() == 0) throw new IllegalStateException();
+        pos = pos + 1;
     }
 
     @Override
     public void retreat() {
-        if(leftLength()==0) throw new IllegalStateException();
-        position -=1;
+        if (leftLength() == 0) throw new IllegalStateException();
+        pos = pos - 1;
     }
 
     @Override
     public void reset() {
-        position =0;
+        pos = 0;
     }
 
     @Override
     public void advanceToEnd() {
-        position = elements.size();
+        pos = elements.size();
     }
 
     @Override
     public int leftLength() {
-        return position;
+        return pos;
     }
 
     @Override
     public int rightLength() {
-        return elements.size()-(position);
+        return elements.size() - leftLength();
     }
 
     @Override
     public Scroll<E> newInstance() {
-        ListScroll<E> listScroll = new ListScroll<E>(capacity());
-        return listScroll;
+       return new ListScroll<E>(capacity());
+    }
+
+    @Override
+    public int capacity() {
+        return super.capacity();
     }
 
     @Override
     public void swapRights(Scroll<E> that) {
-            super.swapRights(that);
+        super.swapRights(that);
     }
+
 }

@@ -1,7 +1,8 @@
 package boundedscroll;
 
 public class LinkedScroll<E> extends AbstractScroll<E> {
-class Node{
+
+   private class Node{
     E contents;
     Node next;
     Node prev;
@@ -29,10 +30,8 @@ class Node{
         Node newNode = new Node(elem);
         newNode.next = cursor.next;
         newNode.prev = cursor.prev;
-
         cursor.prev.next = newNode;
         cursor.next.prev = newNode;
-
         cursor.next = newNode;
     }
 

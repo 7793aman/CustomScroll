@@ -3,11 +3,15 @@ package boundedscroll;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import static org.junit.Assert.*;
 
 public class StackScrollTest {
 
     Scroll<String> ab_cd_6;
+    Scroll<String> wx_yz_6;
 
     @Before
     public void setUp() {
@@ -20,10 +24,18 @@ public class StackScrollTest {
         ab_cd_6.advance();
         ab_cd_6.advance();
 
+
+        wx_yz_6 = new StackScroll<>(8);
+        wx_yz_6.insert("Z");
+        wx_yz_6.insert("Y");
+        wx_yz_6.insert("X");
+        wx_yz_6.insert("W");
+        wx_yz_6.insert("V");
+
     }
 
     @Test
-    public void initSetup1() {
+    public void initSetup() {
         assertEquals(6, ab_cd_6.capacity());
     }
 
@@ -41,7 +53,9 @@ public class StackScrollTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentException() {
+        ab_cd_6.insert("X");
         ab_cd_6.insert(null);
+        assertEquals("X", ab_cd_6.getNext());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -49,6 +63,17 @@ public class StackScrollTest {
         ab_cd_6.insert("F");
         ab_cd_6.insert("G");
         ab_cd_6.insert("H");
+        assertEquals("F", ab_cd_6.getNext());
+    }
+
+    @Test
+    public void testSwapRightsDifferentScroll() {
+        StackScroll<String> ef_gh_4 = new StackScroll<>(4);
+        ef_gh_4.insert("H");
+        ef_gh_4.insert("G");
+        ef_gh_4.reset();
+        ab_cd_6.swapRights(ef_gh_4);
+        assertEquals("G", ab_cd_6.getNext());
     }
 
     @Test
@@ -56,7 +81,7 @@ public class StackScrollTest {
         assertEquals(2, ab_cd_6.leftLength());
     }
 
-    @org.junit.Test
+    @Test
     public void testRightLength() {
         assertEquals(3, ab_cd_6.rightLength());
     }
@@ -73,6 +98,7 @@ public class StackScrollTest {
     public void testAdvanceIllegalStateException() {
         ab_cd_6.advanceToEnd();
         ab_cd_6.advance();
+        assertEquals("E", ab_cd_6.getPrevious());
     }
 
     @Test
@@ -85,9 +111,9 @@ public class StackScrollTest {
 
     @Test(expected = IllegalStateException.class)
     public void testRetreatIllegalStateException() {
+        ab_cd_6.reset();
         ab_cd_6.retreat();
-        ab_cd_6.retreat();
-        ab_cd_6.retreat();
+        assertEquals(0, ab_cd_6.leftLength());
     }
 
     @Test
@@ -113,6 +139,15 @@ public class StackScrollTest {
         assertEquals("D", ab_cd_6.getNext());
     }
 
+
+    @Test(expected = IllegalStateException.class)
+    public void testDeleteException() {
+        String element = ab_cd_6.delete();
+        assertEquals("C", element);
+        ab_cd_6.advanceToEnd();
+        ab_cd_6.delete();
+    }
+
     @Test
     public void testSwapRights() {
         StackScroll<String> wx_yz_6 = new StackScroll<>(6);
@@ -131,5 +166,46 @@ public class StackScrollTest {
         assertEquals("C", wx_yz_6.getNext());
     }
 
+
+    @Test(expected = IllegalStateException.class)
+    public void testSwapRightsException() {
+        StackScroll<String> wx_yz_6 = new StackScroll<>(6);
+        wx_yz_6.insert("Z");
+        wx_yz_6.insert("Y");
+        wx_yz_6.insert("X");
+        wx_yz_6.insert("W");
+        wx_yz_6.insert("V");
+        wx_yz_6.insert("U");
+        wx_yz_6.advance();
+        assertEquals(6, wx_yz_6.capacity());
+        ab_cd_6.swapRights(wx_yz_6);
+    }
+
+    @Test
+    public void swapRightsDifferentScroll() {
+        ListScroll<String> ef_gh_4 = new ListScroll<>(3);
+        ef_gh_4.insert("Y");
+        ef_gh_4.insert("X");
+        ab_cd_6.swapRights(ef_gh_4);
+        assertEquals("X", ab_cd_6.getNext());
+    }
+
+    @Test
+    public void newInstanceTest() {
+        Scroll<String> temp = ab_cd_6.newInstance();
+        assertEquals(6, temp.capacity());
+        assertEquals(0, temp.leftLength());
+        assertEquals(0, temp.rightLength());
+
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void newInstanceTestException() {
+        Scroll<String> temp = ab_cd_6.newInstance();
+        assertEquals(6, temp.capacity());
+        assertEquals(0, temp.leftLength());
+        assertEquals(0, temp.rightLength());
+        temp.retreat();
+    }
 
 }

@@ -12,12 +12,6 @@ public class StackScroll<E> extends AbstractScroll<E> {
         right = new Stack<>();
     }
 
-    /**
-     * Adds the specified element to the right of the cursor in this scroll.
-     *
-     * @param elem element to be added to this scroll
-     * @throws IllegalArgumentException if the specified element is null
-     */
     @Override
     public void insert(E elem) {
         if (elem == null) throw new IllegalArgumentException();
@@ -59,18 +53,15 @@ public class StackScroll<E> extends AbstractScroll<E> {
 
     @Override
     public void swapRights(Scroll<E> that) {
-        if (that instanceof StackScroll<E>) {
+        if(!(that instanceof StackScroll)){
+            super.swapRights(that);
+            return;
+        }
             if(this.leftLength() + that.rightLength() > this.capacity()) throw  new IllegalStateException();
-            if(that.leftLength() + this.rightLength() > that.capacity()) throw  new IllegalStateException();
-
             StackScroll<E> stackScroll = (StackScroll<E>) that;
             Stack<E> temp = this.right;
             this.right = stackScroll.right;
             stackScroll.right = temp;
-
-        } else {
-            super.swapRights(that);
-        }
     }
 
     @Override
@@ -87,5 +78,11 @@ public class StackScroll<E> extends AbstractScroll<E> {
     public Scroll<E> newInstance() {
         return new StackScroll<E>(capacity());
     }
+
+    @Override
+    public int capacity() {
+        return super.capacity();
+    }
+
 
 }

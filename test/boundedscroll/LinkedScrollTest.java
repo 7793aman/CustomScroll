@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class LinkScrollTest {
+public class LinkedScrollTest {
     Scroll<String> linkScroll;
 
     @Before
@@ -34,11 +34,13 @@ public class LinkScrollTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentException() {
+        assertEquals(5, linkScroll.rightLength());
         linkScroll.insert(null);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testIllegalStateException() {
+        assertEquals(5, linkScroll.rightLength());
         linkScroll.insert("F");
         linkScroll.insert("G");
         linkScroll.insert("H");
@@ -64,6 +66,7 @@ public class LinkScrollTest {
 
     @Test(expected = IllegalStateException.class)
     public void testAdvanceIllegalStateException() {
+        assertEquals(5, linkScroll.rightLength());
         linkScroll.advanceToEnd();
         linkScroll.advance();
     }
@@ -79,9 +82,17 @@ public class LinkScrollTest {
 
     @Test(expected = IllegalStateException.class)
     public void testRetreatIllegalStateException() {
+        assertEquals(5, linkScroll.rightLength());
         linkScroll.retreat();
         linkScroll.retreat();
         linkScroll.retreat();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testDeleteIllegalStateException() {
+        assertEquals(5, linkScroll.rightLength());
+        linkScroll.advanceToEnd();
+        linkScroll.delete();
     }
 
     @Test
@@ -133,6 +144,12 @@ public class LinkScrollTest {
         assertEquals("C", wx_yz_6.getNext());
     }
 
-
+    @Test
+    public void testNewInstance(){
+        Scroll<String> linkScrollNew = linkScroll.newInstance();
+        assertEquals(6, linkScrollNew.capacity());
+        assertEquals(0, linkScrollNew.leftLength());
+        assertEquals(0, linkScrollNew.rightLength());
+    }
 
 }

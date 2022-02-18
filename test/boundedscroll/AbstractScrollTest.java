@@ -3,10 +3,13 @@ package boundedscroll;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import static org.junit.Assert.*;
 
 public class AbstractScrollTest {
-    Scroll<String>  listScroll;
+    Scroll<String> listScroll;
     Scroll<String> wx_yz_6;
 
     @Before
@@ -26,6 +29,7 @@ public class AbstractScrollTest {
         wx_yz_6.insert("V");
 
     }
+
     @Test
     public void capacity() {
         assertEquals(8, listScroll.capacity());
@@ -33,11 +37,22 @@ public class AbstractScrollTest {
 
     @Test
     public void listIterator() {
-
+       ListIterator<String> itr= listScroll.listIterator();
+       assertEquals("A",itr.next());
+       listScroll.advance();
+        assertEquals("A",itr.previous());
+        listScroll.reset();
+        assertEquals(false,itr.hasPrevious());
+        listScroll.advanceToEnd();
+        assertEquals(false,itr.hasNext());
     }
 
     @Test
     public void iterator() {
+        Iterator<String> itr= listScroll.iterator();
+        assertEquals("A",itr.next());
+        listScroll.advanceToEnd();
+        assertEquals(false,itr.hasNext());
     }
 
     @Test
@@ -54,7 +69,7 @@ public class AbstractScrollTest {
 
     @Test
     public void replace() {
-        String elm= listScroll.replace("P");
+        String elm = listScroll.replace("P");
         assertEquals("A", elm);
     }
 
@@ -79,7 +94,7 @@ public class AbstractScrollTest {
     @Test
     public void splice() {
         listScroll.splice(wx_yz_6);
-        assertEquals("A",listScroll.getNext());
+        assertEquals("A", listScroll.getNext());
     }
 
     @Test
@@ -90,9 +105,21 @@ public class AbstractScrollTest {
 
     @Test
     public void testEquals() {
+        listScroll = new ListScroll<>(8);
+        listScroll.insert("C");
+        listScroll.insert("B");
+        listScroll.insert("A");
+
+        wx_yz_6 = new ListScroll<>(8);
+        wx_yz_6.insert("C");
+        wx_yz_6.insert("B");
+        wx_yz_6.insert("A");
+
+
+        boolean flag = listScroll.equals(wx_yz_6);
+        assertEquals(true, flag);
+
     }
 
-    @Test
-    public void testHashCode() {
-    }
+
 }

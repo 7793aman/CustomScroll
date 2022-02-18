@@ -15,7 +15,7 @@ public interface Scroll<E> extends Iterable<E> {
      *
      * @param element
      * @throws IllegalArgumentException if the element is null
-     * @throws IllegalStateException    if the stack is full
+     * @throws IllegalStateException    if the scroll is full
      */
     public void insert(E element) throws IllegalArgumentException, IllegalStateException;
 
@@ -24,7 +24,7 @@ public interface Scroll<E> extends Iterable<E> {
      * Deletes the element to the right of the cursor
      *
      * @return E the element that was deleted
-     * @throws IllegalStateException if the stack is empty
+     * @throws IllegalStateException if the scroll is empty
      */
     public E delete() throws IllegalStateException;
 
@@ -62,7 +62,7 @@ public interface Scroll<E> extends Iterable<E> {
      *
      * @param that
      */
-    public void swapRights(Scroll<E> that);
+    public void swapRights(Scroll<E> that) throws IllegalStateException;
 
 
     /**
