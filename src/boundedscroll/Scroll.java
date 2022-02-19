@@ -61,6 +61,7 @@ public interface Scroll<E> extends Iterable<E> {
      * Swaps the right part of this scroll with the right part of that scroll
      *
      * @param that
+     * @throws IllegalStateException if the size of this or that exceeds the respective capacity while swapping
      */
     public void swapRights(Scroll<E> that) throws IllegalStateException;
 
@@ -101,16 +102,18 @@ public interface Scroll<E> extends Iterable<E> {
      * Returns a handle to  the element to the right of the cursor. The scroll does not change and the cursor does not change.
      *
      * @return a handle to the next element of the cursor without changing the cursor position or modifying the scroll
+     * @throws IllegalStateException if the cursor is at the end of the scroll
      */
-    public E getNext();
+    public E getNext() throws IllegalStateException;
 
 
     /**
      * Returns a handle to  the element to the left of the cursor. The scroll does not change and the cursor does not change.
      *
      * @return a handle to the previous element of the cursor without changing the cursor position or modifying the scroll
+     * @throws IllegalStateException if the cursor is at the beginning of the scroll
      */
-    public E getPrevious();
+    public E getPrevious() throws IllegalStateException;
 
     /**
      * Replaces the element to the right of the cursor and returns the original element

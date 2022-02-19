@@ -77,26 +77,26 @@ public abstract class AbstractScroll<E> implements Scroll<E> {
         swapRightHelper(that, temp);
     }
 
-    private void swapRightHelper(Scroll<E> that, Scroll<E> temp){
-        while(this.rightLength() != 0) {
+    private void swapRightHelper(Scroll<E> that, Scroll<E> temp) {
+        while (this.rightLength() != 0) {
             temp.insert(this.delete());
         }
-        while(that.rightLength() != 0){
+        while (that.rightLength() != 0) {
             this.insert(that.delete());
         }
-        while(temp.rightLength() != 0){
+        while (temp.rightLength() != 0) {
             that.insert(temp.delete());
         }
 
         int count = this.rightLength();
         this.advanceToEnd();
-        while(count > 0){
+        while (count > 0) {
             this.retreat();
             temp.insert(this.delete());
-            count --;
+            count--;
         }
 
-        while(temp.rightLength() != 0){
+        while (temp.rightLength() != 0) {
             this.insert(temp.delete());
         }
     }
@@ -131,18 +131,24 @@ public abstract class AbstractScroll<E> implements Scroll<E> {
             E elem = getNext();
             advance();
             sb.append(elem);
-            sb.append(" ");
+            sb.append(i <= leftLength - 2 ? ", " : "");
         }
+
         sb.append("]");
         sb.append("[");
         for (int i = 0; i < rightLength; i++) {
             E elem = getNext();
             sb.append(elem);
-            sb.append(" ");
+            sb.append(i <= rightLength - 2 ? ", " : "");
             advance();
         }
+
         sb.append("]:");
         sb.append(capacity());
+
+        while (this.leftLength() != leftLength) {
+            this.retreat();
+        }
         return sb.toString();
     }
 
@@ -153,31 +159,47 @@ public abstract class AbstractScroll<E> implements Scroll<E> {
 
         Scroll that = (Scroll) o;
 
+        int l1 = this.leftLength();
+        int l2 = that.leftLength();
+
         if (this.capacity() != that.capacity()) return false;
         if (this.leftLength() != that.leftLength()) return false;
         if (this.rightLength() != that.rightLength()) return false;
-        String first = this.toString();
-        String second = that.toString();
-        if (first.equals(second)) {
-            return true;
+
+        this.reset();
+        that.reset();
+
+        boolean flag = true;
+        while (this.rightLength() != 0) {
+            if (this.getNext() != that.getNext()) {
+                flag = false;
+                break;
+            }
+            this.advance();
+            that.advance();
         }
-        return false;
+        this.reset();
+        that.reset();
+        for (int i = 0; i < l1; i++) this.advance();
+        for (int i = 0; i < l2; i++) that.advance();
+        return flag;
     }
 
     @Override
     public int hashCode() {
         int leftLength = this.leftLength();
-        this.reset();
-        int hash = 17;
+        int result = 17;
         for (E element : this) {
-            hash = 29 * hash + element.hashCode();
+            result = 31 * result + element.hashCode();
         }
-        hash = 29 * hash + capacity();
+        result = 31 * result + capacity();
+        result = 31 * result + leftLength;
+        result = 31 * result + this.rightLength();
         this.reset();
         for (int i = 1; i <= leftLength; i++) {
             this.advance();
         }
-        return hash;
+        return result;
     }
 
 }

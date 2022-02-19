@@ -178,8 +178,6 @@ public class ListScrollTest {
      */
 
 
-
-
     @Test
     public void capacity() {
         assertEquals(10, listScroll.capacity());
@@ -215,7 +213,7 @@ public class ListScrollTest {
     public void getNextException() {
         listScroll.advanceToEnd();
         listScroll.getNext();
-        assertEquals("E",listScroll.getPrevious());
+        assertEquals("E", listScroll.getPrevious());
 
     }
 
@@ -229,7 +227,7 @@ public class ListScrollTest {
     public void getPreviousException() {
         listScroll.reset();
         listScroll.getPrevious();
-        assertEquals("A",listScroll.getNext());
+        assertEquals("A", listScroll.getNext());
 
     }
 
@@ -306,7 +304,7 @@ public class ListScrollTest {
         wx_yz_6.insert("N");
         listScroll.advance();
         listScroll.advance();
-        assertEquals(10,listScroll.capacity());
+        assertEquals(10, listScroll.capacity());
         listScroll.swapRights(wx_yz_6);
 
     }
@@ -321,7 +319,7 @@ public class ListScrollTest {
     }
 
     @Test
-    public void splice(){
+    public void splice() {
         listScroll.splice(wx_yz_6);
         assertEquals("A", listScroll.getNext());
     }
@@ -346,15 +344,73 @@ public class ListScrollTest {
     @Test
     public void testToString() {
         String testString = listScroll.toString();
-        assertEquals("[][A B C D E ]:10", testString);
+        assertEquals("[][A, B, C, D, E]:10", testString);
 
-        listScroll.advance();
-        assertEquals("[A][B C D E ]:10", testString);
+        ListScroll<String> scroll = new ListScroll<>(6);
+        scroll.insert("Z");
+        scroll.insert("Y");
+        scroll.insert("X");
+        scroll.insert("W");
+        scroll.insert("V");
+        scroll.advance();
+        scroll.advance();
+        scroll.advance();
+        String testString2 = scroll.toString();
+        assertEquals("[V, W, X][Y, Z]:6", testString2);
 
-        ListScroll<String> scroll = new ListScroll<>(1);
+        scroll = new ListScroll<>(1);
         String testString1 = scroll.toString();
         assertEquals("[][]:1", testString1);
     }
+
+//    @Test
+//    public void testEquals() {
+//        listScroll = new ListScroll<>(8);
+//        listScroll.insert("C");
+//        listScroll.insert("B");
+//        listScroll.insert("A");
+//
+//        wx_yz_6 = new ListScroll<>(8);
+//        wx_yz_6.insert("C");
+//        wx_yz_6.insert("B");
+//        wx_yz_6.insert("A");
+//
+//
+//        boolean flag = listScroll.equals(wx_yz_6);
+//        assertEquals(true, flag);
+//
+//        listScroll.reset();
+//        wx_yz_6.reset();
+//        listScroll.advance();
+//        assertEquals(false, listScroll.equals(wx_yz_6));
+//
+//        listScroll.reset();
+//        wx_yz_6.reset();
+//        wx_yz_6.insert("S");
+//        assertEquals(false, listScroll.equals(wx_yz_6));
+//
+//        listScroll = new ListScroll<>(8);
+//        listScroll.insert("C");
+//        listScroll.insert("B");
+//        listScroll.insert("A");
+//
+//        wx_yz_6 = new ListScroll<>(8);
+//        wx_yz_6.insert("C");
+//        wx_yz_6.insert("J");
+//        wx_yz_6.insert("A");
+//
+//        assertEquals(false, listScroll.equals(wx_yz_6));
+//
+//        wx_yz_6 = null;
+//        assertEquals(false, listScroll.equals(wx_yz_6));
+//
+//        wx_yz_6 = new ListScroll<String>(2);
+//        wx_yz_6.insert("A");
+//        assertEquals(false, listScroll.equals(wx_yz_6));
+//
+//
+//    }
+
 
     @Test
     public void testEquals() {
@@ -368,41 +424,67 @@ public class ListScrollTest {
         wx_yz_6.insert("B");
         wx_yz_6.insert("A");
 
-
         boolean flag = listScroll.equals(wx_yz_6);
         assertEquals(true, flag);
 
-        listScroll.reset();
-        wx_yz_6.reset();
+        StackScroll<String> stackScroll = new StackScroll<>(8);
+        stackScroll.insert("C");
+        stackScroll.insert("B");
+        stackScroll.insert("A");
+        stackScroll.advance();
         listScroll.advance();
-        assertEquals(false, listScroll.equals(wx_yz_6));
 
-        listScroll.reset();
-        wx_yz_6.reset();
-        wx_yz_6.insert("S");
-        assertEquals(false, listScroll.equals(wx_yz_6));
+        assertEquals(true, listScroll.equals(stackScroll));
 
+
+    }
+
+    @Test
+    public void testEqualsDifferent() {
         listScroll = new ListScroll<>(8);
         listScroll.insert("C");
         listScroll.insert("B");
         listScroll.insert("A");
 
+        listScroll.advance();
+        wx_yz_6 = new ListScroll<>(8);
+        wx_yz_6.insert("Z");
+        wx_yz_6.insert("X");
+        wx_yz_6.insert("Y");
+        assertEquals(false, listScroll.equals(wx_yz_6));
+
+
+        wx_yz_6 = new ListScroll<>(2);
+        wx_yz_6.insert("C");
+        assertEquals(false, listScroll.equals(wx_yz_6));
+
         wx_yz_6 = new ListScroll<>(8);
         wx_yz_6.insert("C");
-        wx_yz_6.insert("J");
+        wx_yz_6.insert("B");
         wx_yz_6.insert("A");
 
+        listScroll = new ListScroll<>(8);
+        listScroll.insert("D");
+        listScroll.insert("C");
+        listScroll.insert("B");
+        listScroll.insert("A");
+
+        wx_yz_6.advance();
+        listScroll.advance();
         assertEquals(false, listScroll.equals(wx_yz_6));
 
         wx_yz_6 = null;
         assertEquals(false, listScroll.equals(wx_yz_6));
 
-        wx_yz_6 = new ListScroll<String>(2);
-        wx_yz_6.insert("A");
+        listScroll.reset();
+        wx_yz_6 = new ListScroll<>(8);
+        wx_yz_6.insert("Z");
+        wx_yz_6.insert("X");
+        wx_yz_6.insert("Y");
+        wx_yz_6.insert("W");
         assertEquals(false, listScroll.equals(wx_yz_6));
-
-
     }
+
 
     @Test
     public void testHashCode() {
@@ -410,19 +492,19 @@ public class ListScrollTest {
         listScroll.insert("C");
         listScroll.insert("B");
         listScroll.insert("A");
-        listScroll.advance();
-        listScroll.advance();
 
-        wx_yz_6 = new ListScroll<>(8);
+        wx_yz_6 = new StackScroll<>(8);
         wx_yz_6.insert("C");
         wx_yz_6.insert("B");
         wx_yz_6.insert("A");
 
-       assertEquals(listScroll.hashCode(), wx_yz_6.hashCode());
 
-       wx_yz_6.insert("D");
+        assertEquals(listScroll.hashCode()
+                , wx_yz_6.hashCode());
 
-        assertNotEquals(listScroll.hashCode(), wx_yz_6.hashCode());
+        wx_yz_6.advance();
+        assertNotEquals(listScroll.hashCode()
+                , wx_yz_6.hashCode());
 
     }
 }

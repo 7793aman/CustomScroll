@@ -145,7 +145,7 @@ public class LinkedScrollTest {
     }
 
     @Test
-    public void testNewInstance(){
+    public void testNewInstance() {
         Scroll<String> linkScrollNew = linkScroll.newInstance();
         assertEquals(6, linkScrollNew.capacity());
         assertEquals(0, linkScrollNew.leftLength());
