@@ -21,7 +21,7 @@ public class ListScroll<E> extends AbstractScroll<E> {
 
     @Override
     public E delete() {
-        if (rightLength() == 0)  throw new IllegalStateException();
+        if (rightLength() == 0) throw new IllegalStateException();
         return elements.remove(pos);
     }
 
@@ -59,7 +59,7 @@ public class ListScroll<E> extends AbstractScroll<E> {
 
     @Override
     public Scroll<E> newInstance() {
-       return new ListScroll<E>(capacity());
+        return new ListScroll<E>(capacity());
     }
 
     @Override

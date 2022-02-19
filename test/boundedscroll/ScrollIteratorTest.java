@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class ScrollIteratorTest {
 
     Scroll<String> listScroll;
-    ListIterator<String> itr;
+    ListIterator<String> iterator;
 
     @Before
     public void setUp() {
@@ -20,79 +20,79 @@ public class ScrollIteratorTest {
         listScroll.insert("C");
         listScroll.insert("B");
         listScroll.insert("A");
-        itr= listScroll.listIterator();
+        iterator= listScroll.listIterator();
     }
     @Test
     public void testHasNext() {
-        assertEquals(true,itr.hasNext());
+        assertEquals(true,iterator.hasNext());
         listScroll.advanceToEnd();
-        assertEquals(false,itr.hasNext());
+        assertEquals(false,iterator.hasNext());
     }
 
     @Test
     public void testNext() {
-        assertEquals("A",itr.next());
+        assertEquals("A",iterator.next());
         listScroll.advance();
-        assertEquals("C",itr.next());
+        assertEquals("C",iterator.next());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testNextException() {
-        assertEquals(true,itr.hasNext());
+        assertEquals(true,iterator.hasNext());
         listScroll.advanceToEnd();
-        itr.next();
+        iterator.next();
 
     }
 
     @Test
     public void testHasPrevious() {
-        assertEquals(false,itr.hasPrevious());
+        assertEquals(false,iterator.hasPrevious());
         listScroll.advance();
-        assertEquals(true,itr.hasPrevious());
+        assertEquals(true,iterator.hasPrevious());
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testPreviousException() {
-        assertEquals(false,itr.hasPrevious());
+        assertEquals(false,iterator.hasPrevious());
         listScroll.reset();
-        itr.previous();
+        iterator.previous();
 
     }
 
     @Test
     public void testPrevious() {
         listScroll.advanceToEnd();
-        assertEquals("E",itr.previous());
+        assertEquals("E",iterator.previous());
     }
 
     @Test
     public void testNextIndex() {
-        assertEquals(0, itr.nextIndex());
+        assertEquals(0, iterator.nextIndex());
         listScroll.advance();
-        assertEquals(1,itr.nextIndex());
+        assertEquals(1,iterator.nextIndex());
     }
 
     @Test
     public void testPreviousIndex() {
-        assertEquals(-1, itr.previousIndex());
+        assertEquals(-1, iterator.previousIndex());
         listScroll.advance();
-        assertEquals(0,itr.previousIndex());
+        assertEquals(0,iterator.previousIndex());
     }
 
 
     @Test(expected = UnsupportedOperationException.class)
     public void remove() {
-        itr.remove();
+        iterator.remove();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void set() {
-        itr.set("X");
+        iterator.set("X");
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void add() {
-        itr.add("X");
+        iterator.add("X");
     }
 
 }

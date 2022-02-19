@@ -53,15 +53,15 @@ public class StackScroll<E> extends AbstractScroll<E> {
 
     @Override
     public void swapRights(Scroll<E> that) {
-        if(!(that instanceof StackScroll)){
+        if (!(that instanceof StackScroll)) {
             super.swapRights(that);
             return;
         }
-            if(this.leftLength() + that.rightLength() > this.capacity()) throw  new IllegalStateException();
-            StackScroll<E> stackScroll = (StackScroll<E>) that;
-            Stack<E> temp = this.right;
-            this.right = stackScroll.right;
-            stackScroll.right = temp;
+        if (this.leftLength() + that.rightLength() > this.capacity()) throw new IllegalStateException();
+        StackScroll<E> stackScroll = (StackScroll<E>) that;
+        Stack<E> temp = this.right;
+        this.right = stackScroll.right;
+        stackScroll.right = temp;
     }
 
     @Override
@@ -83,6 +83,5 @@ public class StackScroll<E> extends AbstractScroll<E> {
     public int capacity() {
         return super.capacity();
     }
-
 
 }

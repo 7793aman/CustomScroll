@@ -16,7 +16,6 @@ public class LinkedScrollTest {
         linkScroll.insert("C");
         linkScroll.insert("B");
         linkScroll.insert("A");
-
     }
 
     @Test
@@ -30,7 +29,6 @@ public class LinkedScrollTest {
         assertEquals("Z", linkScroll.getNext());
         assertEquals(6, linkScroll.rightLength());
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentException() {
@@ -103,7 +101,6 @@ public class LinkedScrollTest {
         assertEquals("B", linkScroll.getNext());
     }
 
-
     @Test
     public void testReset() {
         linkScroll.advance();
@@ -122,26 +119,24 @@ public class LinkedScrollTest {
 
     @Test
     public void testSwapRights() {
-        LinkedScroll<String> wx_yz_6 = new LinkedScroll<>(7);
-        wx_yz_6.insert("Z");
-        wx_yz_6.insert("Y");
-        wx_yz_6.insert("X");
-        wx_yz_6.insert("W");
-        wx_yz_6.insert("V");
+        LinkedScroll<String> testListScroll = new LinkedScroll<>(7);
+        testListScroll.insert("Z");
+        testListScroll.insert("Y");
+        testListScroll.insert("X");
+        testListScroll.insert("W");
+        testListScroll.insert("V");
 
-        wx_yz_6.advance();
-        wx_yz_6.advance();
-
+        testListScroll.advance();
+        testListScroll.advance();
 
         linkScroll.advance();
         linkScroll.advance();
-
-        linkScroll.swapRights(wx_yz_6);
+        linkScroll.swapRights(testListScroll);
 
         assertEquals(3, linkScroll.rightLength());
         assertEquals("X", linkScroll.getNext());
-        assertEquals(3, wx_yz_6.rightLength());
-        assertEquals("C", wx_yz_6.getNext());
+        assertEquals(3, testListScroll.rightLength());
+        assertEquals("C", testListScroll.getNext());
     }
 
     @Test

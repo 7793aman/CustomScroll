@@ -7,17 +7,18 @@ public class ScrollIterator<E> implements ListIterator<E> {
 
     Scroll<E> scroll;
 
-    public ScrollIterator(Scroll<E> scroll){
-        this.scroll=scroll;
+    public ScrollIterator(Scroll<E> scroll) {
+        this.scroll = scroll;
     }
+
     @Override
     public boolean hasNext() {
-        return  scroll.rightLength() > 0;
+        return scroll.rightLength() > 0;
     }
 
     @Override
     public E next() {
-        if(!hasNext()) throw new NoSuchElementException();
+        if (!hasNext()) throw new NoSuchElementException();
         E result = scroll.getNext();
         scroll.advance();
         return result;
@@ -30,7 +31,7 @@ public class ScrollIterator<E> implements ListIterator<E> {
 
     @Override
     public E previous() {
-        if(!this.hasPrevious()) throw  new NoSuchElementException();
+        if (!this.hasPrevious()) throw new NoSuchElementException();
         E result = scroll.getPrevious();
         scroll.retreat();
         return result;
@@ -43,8 +44,8 @@ public class ScrollIterator<E> implements ListIterator<E> {
 
     @Override
     public int previousIndex() {
-        if(scroll.leftLength() == 0) return -1;
-        return scroll.leftLength()-1;
+        if (scroll.leftLength() == 0) return -1;
+        return scroll.leftLength() - 1;
     }
 
     @Override
